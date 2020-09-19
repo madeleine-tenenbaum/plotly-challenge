@@ -9,10 +9,7 @@ d3.json("data/samples.json").then((data) => {
     for (var i = 0; i < sampleOptions.length; i++) {
       var option = document.createElement("OPTION");
  
-      //Set Customer Name in Text part.
       option.innerHTML = sampleOptions[i];
- 
-      //Set CustomerId in Value part.
       option.value = sampleOptions[i];
  
       //Add the Option element to DropDownList.
@@ -88,28 +85,45 @@ function init() {
     }));
   };
 
-
+init();
 
 // POPULATE TABLE
 
 
-function table() {
-  // read in data
-    d3.json("data/samples.json").then((importedData => {
-      var meta = importedData.metadata
-      var panel = d3.select("panel-body");
+d3.selectAll("select").on("change", function () {
+    
+  // Prevent the page from refreshing
+  d3.event.preventDefault();
 
-      meta.forEach((line) => {
-        var row = panel.append("li");
-        Object.entries(line).forEach(([key, value]) => {
-         var cell = row.append("li");
-          cell.text(value);
+  function table() {
+    // read in data
+    d3.json("data/samples.json").then(importedData => {
+      var sample = importedData.samples
+
+       // Use D3 to select the dropdown menu
+      var dropdownMenu = d3.select("#selDataset");
+        // Assign the value of the dropdown menu option to a variable
+      var dataset = dropdownMenu.property("value");
+      console.log(dataset);
+      for (var i = 0; i < sample.length; i++)
+        if (dataset === importedData.metatada[i].id)
+        then:
+          var meta = importedData.metadata[i]
+          var panel = d3.select("panel-body");
+
+          meta.forEach((line) => {
+            var row = panel.append("li");
+            panel.append("ul")
+            Object.entries(line).forEach(([key, value]) => {
+            var cell = row.append("li");
+              cell.text(value);
+            });
+          });
         });
-      });
-    }));
-};
+     };
+  table();
 
-
+});
 
 
 //UPDATE BAR CHART
